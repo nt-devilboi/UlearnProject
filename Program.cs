@@ -1,7 +1,17 @@
+using Vostok.Logging.Console;
+using Vostok.Logging.Microsoft;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
+var log = new ConsoleLog(new ConsoleLogSettings()
+{
+    ColorsEnabled = true,
+});
+
+builder.Logging.ClearProviders();
+builder.Logging.AddVostok(log);
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
