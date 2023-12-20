@@ -8,20 +8,20 @@ using Vostok.Logging.Abstractions;
 namespace UlearnTodoTimer.Controllers;
 
 
-//todo: код написан упрощенно, ибо мне пока лень думать, но концептуально все именно так. как минимум нету проверок ваще. если не понятно. либо спросить меня, либо phind.com
+//todo: код написан упрощенно, ибо мне пока лень думать, но концептуально все именно так. как минимум нету проверок ваще. если не понятно. либо спросить меня, либо phind.com`
 [ApiController]
 [Route("api/tasks")]
 public class TaskController
 {
     private readonly ITaskRepo _taskRepo;
     private readonly ILog _log;
-    private readonly AccountScope _accountScope;
+    private readonly TokenScope _tokenScope;
     
-    public TaskController(ITaskRepo taskRepo, ILog log, AccountScope accountScope)
+    public TaskController(ITaskRepo taskRepo, ILog log, TokenScope tokenScope)
     {
         _taskRepo = taskRepo;
         _log = log;
-        _accountScope = accountScope;
+        _tokenScope = tokenScope;
     }
 
     [HttpGet($"{{id:guid}}")]
@@ -36,7 +36,7 @@ public class TaskController
     [HttpPost]
     public ActionResult<Todo> Post([FromBody] TodoRequest todoRequest)
     {
-        var todo = Todo.From(todoRequest, _accountScope.User);
+        var todo = Todo.From(todoRequest, _tokenScope.Token);
         
         _taskRepo.Insert(todo);
 
@@ -46,7 +46,7 @@ public class TaskController
     [HttpGet]
     public async Task<ActionResult<List<Todo>>> GetAll()
     {
-        var todos = await _taskRepo.Get(_accountScope.User);
+        var todos = await _taskRepo.Get(_tokenScope.Token);
 
         return todos;
     }

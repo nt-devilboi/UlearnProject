@@ -2,7 +2,7 @@ using UlearnTodoTimer.Domen.Entities;
 
 namespace UlearnTodoTimer.Controllers.Model;
 
-public class AccountScope
+public class TokenScope
 {
-    public User User { get; set; }
+    public Token Token  { get; set; }
 }

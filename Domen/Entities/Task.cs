@@ -14,7 +14,7 @@ public class Todo
     [Column("time_start")] public DateTime TimeStart { get; set; }
     [Column("time_end")] public DateTime TimeEnd { get; set; }
     
-    public static Todo From(TodoRequest todoRequest, User user)
+    public static Todo From(TodoRequest todoRequest, Token token)
     {
         return new()
         {

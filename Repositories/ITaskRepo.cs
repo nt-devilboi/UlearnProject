@@ -6,7 +6,7 @@ public interface ITaskRepo
 {
     public Task<Todo> Get(Guid id);
     public Task Insert(Todo todo);
-    public Task<List<Todo>> Get(User user);
+    public Task<List<Todo>> Get(Token token);
     void Update(Todo todo);
     Task Delete(Guid id);
 }
