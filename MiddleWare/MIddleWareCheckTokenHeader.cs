@@ -1,8 +1,9 @@
+using EduControl;
 using UlearnTodoTimer.Controllers.Model;
 using UlearnTodoTimer.Repositories;
 using Vostok.Logging.Abstractions;
 
-namespace EduControl.MiddleWare;
+namespace UlearnTodoTimer.MiddleWare;
 
 public class MIddleWareCheckTokenHeader
 {
@@ -13,13 +14,13 @@ public class MIddleWareCheckTokenHeader
    private static readonly string AuthorizationHeaderPrefix = "bearer";
 
     private readonly RequestDelegate next;
-    private readonly ITokenAccountVkRepository _tokens;
+    private readonly ITokenAccountLinkRepository _tokensAccountLink;
     private readonly ILog log;
 
-    public MIddleWareCheckTokenHeader(RequestDelegate next, ILog log, ITokenAccountVkRepository tokens)
+    public MIddleWareCheckTokenHeader(RequestDelegate next, ILog log, ITokenAccountLinkRepository tokensAccountLink)
     {
         this.next = next;
-        _tokens = tokens;
+        _tokensAccountLink = tokensAccountLink;
         this.log = log.ForContext("AccessTokenMiddleware");
     }
 
@@ -47,7 +48,7 @@ public class MIddleWareCheckTokenHeader
             .Trim(' ')
             .ToString();
 
-        var accessToken = await _tokens.Get(token);
+        var accessToken = await _tokensAccountLink.Get(token);
         
         if (accessToken == null)
         {

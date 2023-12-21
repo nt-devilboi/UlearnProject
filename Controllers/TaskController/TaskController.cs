@@ -30,6 +30,9 @@ public class TaskController
         var todo = await _taskRepo.Get(id);
         if (todo == null) return new StatusCodeResult(404);
 
+        if (todo.UserId != _tokenScope.Token.Value) return new StatusCodeResult(403);
+        
+        
         return todo;
     }
 

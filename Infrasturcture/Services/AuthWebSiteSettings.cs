@@ -7,12 +7,14 @@ public record AuthWebSiteSettings(
     private static readonly string ClientIdEnv = "CLIENT_ID";
     private static readonly string ClientSecretEnv = "CLIENT_SECRET_BOT";
 
+    /*
     private const string RedirectUrl = "http://localhost:5128/OAuth/Bot";
     private const string ResponseType = "code";
     private const string Version = "5.131";
     public const string Scope = "friends";
+    */
 
-    public string CreateAuthRequest(long state)
+    /*public string CreateAuthRequest(string state)
         => "https://oauth.vk.com/authorize?" +
            $"client_id={ClientId}&state={state}&" +
            "display=page&" +
@@ -20,8 +22,7 @@ public record AuthWebSiteSettings(
            $"redirect_uri={RedirectUrl}&" +
            $"response_type={ResponseType}&" +
            $"v={Version}";
-
-
+    
     public string CreateGetAccessTokenRequest(string code)
     {
         return $"https://oauth.vk.com/access_token?" +
@@ -29,7 +30,7 @@ public record AuthWebSiteSettings(
                $"client_secret={ClientSecret}&" +
                $"redirect_uri={RedirectUrl}&" +
                $"code={code}";
-    }
+    }*/
     
     public static AuthWebSiteSettings FromEnv()
     {
