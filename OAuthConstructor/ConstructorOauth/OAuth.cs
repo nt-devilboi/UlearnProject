@@ -3,6 +3,8 @@ using UlearnTodoTimer.OAuthConstructor.Interfaces;
 
 namespace UlearnTodoTimer.FluetApi.ConstructorOauth;
 
+
+// привет принцип ISP (разделение интерфейсов
 public class OAuths : IRegisterOAuth, IProvideOAuth
 {
     private readonly Dictionary<string, IOauthRequests> OauthRequestsMap = new Dictionary<string, IOauthRequests>();

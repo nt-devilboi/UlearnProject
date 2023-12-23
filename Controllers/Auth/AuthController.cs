@@ -26,7 +26,7 @@ public class AuthController : ControllerBase
         _provideOAuth = provideOAuth;
     }
 
-
+    //привет принцип OCP. класс закрыт для изменений и открыт для расширения.
     [HttpGet]
     public async Task<IActionResult> Auth([FromQuery] string code, [FromQuery(Name = "state")] string oAuthName)
     {
