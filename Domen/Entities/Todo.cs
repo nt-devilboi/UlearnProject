@@ -8,13 +8,13 @@ public class Todo
 {
     [Column("id")] public Guid Id { get; set; }
     [Column("is_complete")]  public bool IsComplete { get; set; }
-    [Column("user_id")] public string UserId { get; set; } 
+    [Column("token_id")] public Guid TokenId { get; set; } 
     [Column("title")] public string Title { get; set; }
     [Column("desc")] public string Desc { get; set; }
     [Column("time_start")] public DateTime TimeStart { get; set; }
     [Column("time_end")] public DateTime TimeEnd { get; set; }
     
-    public static Todo From(TodoRequest todoRequest, User user)
+    public static Todo From(TodoRequest todoRequest, Guid tokenId)
     {
         return new()
         {
@@ -23,7 +23,8 @@ public class Todo
             Desc = todoRequest.Desc,
             Title = todoRequest.Title,
             TimeEnd = todoRequest.TimeEnd,
-            TimeStart = todoRequest.TimeStart
+            TimeStart = todoRequest.TimeStart,
+            TokenId = tokenId
         };
     }
 }
