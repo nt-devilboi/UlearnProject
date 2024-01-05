@@ -10,10 +10,10 @@
         <PackageReference Include="EntityFramework" Version="6.4.4" />
         <PackageReference Include="EntityFramework6.Npgsql" Version="6.4.3" />
         <PackageReference Include="MediatR" Version="12.2.0" />
-        <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="7.0.4"/>
+        <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="7.0.4" />
         <PackageReference Include="Microsoft.EntityFrameworkCore" Version="7.0.0" />
         <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
-        <PackageReference Include="Swashbuckle.AspNetCore" Version="6.4.0"/>
+        <PackageReference Include="Swashbuckle.AspNetCore" Version="6.4.0" />
         <PackageReference Include="VkNet" Version="1.77.0" />
         <PackageReference Include="Vostok.Configuration" Version="0.1.44-pre000080" />
         <PackageReference Include="Vostok.Logging.Abstractions" Version="1.0.33-pre000073" />
