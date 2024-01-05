@@ -5,7 +5,7 @@ namespace UlearnTodoTimer.Repositories;
 
 public interface ITokenAccountLinkRepository
 {
-    public Task Add(AccessToken tokenResponse);
-    public Task<Token?> Get(string token);
+    public Task Add(Token token);
+    public Task<Token?> Get(string tokenValue);
     public Task Remove(int id);
 }

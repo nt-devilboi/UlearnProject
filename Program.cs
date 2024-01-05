@@ -1,7 +1,14 @@
+using System.Reflection;
+using MediatR;
+using MediatR.Pipeline;
+using UlearnTodoTimer.Application;
+using UlearnTodoTimer.Controllers.Model;
 using UlearnTodoTimer.FluetApi.ConstructorOauth;
 using UlearnTodoTimer.MiddleWare;
 using UlearnTodoTimer.OAuthConstructor.Interfaces;
+using UlearnTodoTimer.Repositories;
 using UlearnTodoTimer.Services;
+using Vostok.Logging.Abstractions;
 using Vostok.Logging.Console;
 using Vostok.Logging.Microsoft;
 
@@ -19,7 +26,7 @@ oAuth.AddOAuth("vk", _ =>
         .SetDisplay("page")
         .SetResponseType("code")
         .SetVersion("5.131")
-        .SetClientId(AuthWebSiteSettings.FromEnv().ClientId)
+        .SetClientId("51749903")
         .SetClientSecret(AuthWebSiteSettings.FromEnv().ClientSecret);
 }); // todo: можно сделать метот расширение который часть запросов пишет сам: например "AddVkOAuthWebSite"
 // Add services to the container.
@@ -29,16 +36,27 @@ var log = new ConsoleLog(new ConsoleLogSettings()
     ColorsEnabled = true,
 });
 
-
+builder.Services.AddMediatR(x => x.RegisterServicesFromAssembly(Assembly.GetExecutingAssembly()).AddRequestPreProcessor<AddTodoHanlerPre>());
+builder.Services.AddSingleton<ITodoRepo, TodoRepoFake>();
 builder.Logging.ClearProviders();
+
 builder.Logging.AddVostok(log);
+builder.Services.AddSingleton<ILog>(log);
 builder.Services.AddControllers();
 
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+
+builder.Services.AddDistributedMemoryCache();
+builder.Services.AddSession();
+
+builder.WebHost.UseUrls("http://localhost:5128"); // оо великий костыль
+
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-builder.Services.AddSingleton<IProvideOAuth>(_ => (IProvideOAuth)oAuth);
 
+builder.Services.AddSingleton<ITokenAccountLinkRepository, TokenAccountLinkRepository>();
+
+builder.Services.AddSingleton<IProvideOAuth>(_ => (IProvideOAuth)oAuth);
+builder.Services.AddScoped<UserInfoScope>();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -48,11 +66,16 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-app.UseWhen(c => c.Request.Path.StartsWithSegments("api"),
-    c => { c.UseMiddleware<MIddleWareCheckTokenHeader>(); });
 
 app.UseHttpsRedirection();
+
+app.UseSession();
 app.UseAuthorization();
+app.UseAuthentication();
+
+
+app.UseWhen(c => c.Request.Path.StartsWithSegments("/api"),
+    c => { c.UseMiddleware<MiddleWareCheckTokenSesion>(); });
 
 app.MapControllers();
 

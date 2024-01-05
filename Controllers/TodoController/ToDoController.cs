@@ -1,5 +1,7 @@
+using MediatR;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
+using UlearnTodoTimer.Application;
 using UlearnTodoTimer.Controllers.Model;
 using UlearnTodoTimer.Domen.Entities;
 using UlearnTodoTimer.Repositories;
@@ -11,26 +13,27 @@ namespace UlearnTodoTimer.Controllers;
 //todo: код написан упрощенно, ибо мне пока лень думать, но концептуально все именно так. как минимум нету проверок ваще. если не понятно. либо спросить меня, либо phind.com`
 [ApiController]
 [Route("api/tasks")]
-public class TaskController
+public class ToDoController
 {
-    private readonly ITaskRepo _taskRepo;
+    private readonly ITodoRepo _todoRepo;
     private readonly ILog _log;
-    private readonly TokenScope _tokenScope;
-    
-    public TaskController(ITaskRepo taskRepo, ILog log, TokenScope tokenScope)
+    private readonly UserInfoScope _userInfoScope;
+    private readonly IMediator _mediator;
+    public ToDoController(ITodoRepo todoRepo, ILog log, UserInfoScope userInfoScope, IMediator mediator)
     {
-        _taskRepo = taskRepo;
+        _todoRepo = todoRepo;
         _log = log;
-        _tokenScope = tokenScope;
+        _userInfoScope = userInfoScope;
+        _mediator = mediator;
     }
 
     [HttpGet($"{{id:guid}}")]
     public async Task<ActionResult<Todo>> Get(Guid id)
     {
-        var todo = await _taskRepo.Get(id);
+        var todo = await _todoRepo.Get(id);
         if (todo == null) return new StatusCodeResult(404);
 
-        if (todo.UserId != _tokenScope.Token.Value) return new StatusCodeResult(403);
+        if (todo.TokenId != _userInfoScope.Token.id) return new StatusCodeResult(403);
         
         
         return todo;
@@ -39,9 +42,9 @@ public class TaskController
     [HttpPost]
     public ActionResult<Todo> Post([FromBody] TodoRequest todoRequest)
     {
-        var todo = Todo.From(todoRequest, _tokenScope.Token);
-        
-        _taskRepo.Insert(todo);
+        var todo = Todo.From(todoRequest, _userInfoScope.Token.id);
+
+        _mediator.Send(new AddTodoCommand(todo)); // релизован здесь про приколу, чтоб просто был. не вижу смысла реализовывать все, ибо кринж, в нем только Insert написан.
 
         return todo;
     }
@@ -49,7 +52,7 @@ public class TaskController
     [HttpGet]
     public async Task<ActionResult<List<Todo>>> GetAll()
     {
-        var todos = await _taskRepo.Get(_tokenScope.Token);
+        var todos = await _todoRepo.GetAll(_userInfoScope.Token.id);
 
         return todos;
     }
@@ -57,7 +60,7 @@ public class TaskController
     [HttpDelete($"{{id:guid}}")]
     public async Task<ActionResult> Delete(Guid id)
     {
-        await _taskRepo.Delete(id);
+        await _todoRepo.Delete(id);
 
         return new OkResult();
     }
@@ -65,11 +68,11 @@ public class TaskController
     [HttpPatch("{id:guid}/do")]
     public async Task<ActionResult> Patch(Guid id)
     {
-        var todo = await _taskRepo.Get(id);
+        var todo = await _todoRepo.Get(id);
         
         todo.IsComplete = !todo.IsComplete;
 
-        _taskRepo.Update(todo);
+        _todoRepo.Update(todo);
 
         return new OkResult();
     }

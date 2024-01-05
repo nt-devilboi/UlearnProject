@@ -30,7 +30,7 @@ public class ConstructorOAuth
     }
     public ConstructorOAuth SetClientId(string clientId)
     {
-        _oAuthData.ClientSecret = clientId;
+        _oAuthData.ClientId = clientId;
 
         return this;
     }
