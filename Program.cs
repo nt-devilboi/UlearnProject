@@ -29,14 +29,6 @@ oAuth.AddOAuth("vk", _ =>
         .SetClientId("51749903")
         .SetClientSecret(AuthWebSiteSettings.FromEnv().ClientSecret);
 }); // todo: можно сделать метот расширение который часть запросов пишет сам: например "AddVkOAuthWebSite"
-
-oAuth.AddOAuth("google", _ =>
-{
-    _.SetRedirectUrl("http://localhost:5128/OAuth/Bot")
-    .SetScope("")
-    .SetHostServiceOAuth("https://www.googleapis.com")
-    .SetUriAuth("auth")
-});
 // Add services to the container.
 
 var log = new ConsoleLog(new ConsoleLogSettings()
