@@ -22,18 +22,28 @@ public class TodoRepoFake : ITodoRepo
         return Task.CompletedTask;
     }
 
-    public Task<List<Todo>> GetAll(Guid tokenId)
+    public async Task<Todo[]> GetAll(Guid tokenId)
     {
-        throw new NotImplementedException();
+        return _todos.Where(x => x.TokenId == tokenId).ToArray();
     }
     
     public void Update(Todo? todo)
     {
-        throw new NotImplementedException();
+        var x = _todos.FirstOrDefault(x => x.Id == todo.Id);
+        if (x != null)
+        {
+            _todos.Remove(x);
+            _todos.Add(todo);
+        }
     }
 
-    public Task Delete(Guid id)
+    public async Task Delete(Guid id)
     {
-        throw new NotImplementedException();
+        var x = _todos.FirstOrDefault(x => x.Id == id);
+        if (x != null)
+        {
+            _todos.Remove(x);
+        }
+        
     }
 }

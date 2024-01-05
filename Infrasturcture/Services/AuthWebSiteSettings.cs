@@ -1,18 +1,15 @@
 namespace UlearnTodoTimer.Services;
 
 public record AuthWebSiteSettings(
-    string ClientId,
     string ClientSecret)
 {
-    private static readonly string ClientIdEnv = "CLIENT_ID";
     private static readonly string ClientSecretEnv = "CLIENT_SECRET_BOT";
     
     public static AuthWebSiteSettings FromEnv()
     {
         var clientSecret = GetEnvVariable(ClientSecretEnv);
-        var clientId = GetEnvVariable(ClientIdEnv);
         
-        return new AuthWebSiteSettings(clientId, clientSecret);
+        return new AuthWebSiteSettings(clientSecret);
     }
     
     private static string GetEnvVariable(string name)
