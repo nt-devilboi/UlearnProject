@@ -18,13 +18,11 @@ public class ToDoController
     private readonly ITodoRepo _todoRepo;
     private readonly ILog _log;
     private readonly UserInfoScope _userInfoScope;
-    private readonly IMediator _mediator;
     public ToDoController(ITodoRepo todoRepo, ILog log, UserInfoScope userInfoScope, IMediator mediator)
     {
         _todoRepo = todoRepo;
         _log = log;
         _userInfoScope = userInfoScope;
-        _mediator = mediator;
     }
 
     [HttpGet($"{{id:guid}}")]
@@ -40,12 +38,11 @@ public class ToDoController
     }
 
     [HttpPost]
-    public ActionResult<Todo> Post([FromBody] TodoRequest todoRequest)
+    public async Task<ActionResult<Todo>> Post([FromBody] TodoRequest todoRequest)
     {
         var todo = Todo.From(todoRequest, _userInfoScope.Token.id);
-
-        _mediator.Send(new AddTodoCommand(todo)); // релизован здесь про приколу, чтоб просто был. не вижу смысла реализовывать все, ибо кринж, в нем только Insert написан.
-
+        await _todoRepo.Insert(todo);
+       
         return todo;
     }
 

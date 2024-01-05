@@ -20,7 +20,7 @@ public class AddTodoHandler : IRequestHandler<AddTodoCommand>
     public async Task Handle(AddTodoCommand request, CancellationToken cancellationToken)
     {
         _log.Info("in Handle");
-        await _repo.Insert(request.Todo);
+       
     }
 }
 
