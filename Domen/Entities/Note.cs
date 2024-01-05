@@ -10,4 +10,9 @@ public class Note
     [Column("user_id")] public string UserId { get; set; }
     [Column("text")] public string Text { get; set; }
     [Column("task_id")] public string TaskId { get; set; }
+
+    // public static object From(TodoRequest todoRequest, object user)
+    // {
+    //     return 
+    // }
 }
