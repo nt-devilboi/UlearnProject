@@ -1,15 +1,34 @@
-namespace UlearnTodoTimer.Infrasturcture.Services.AppAuth;
+using UlearnTodoTimer.OAuthConstructor.Extentions;
 
-public class OAuthData
+namespace UlearnTodoTimer.OAuthConstructor;
+
+internal class OAuthData // по идей можно сделать internal, если будет в виде либы
 {
-    public string RedirectUrl = "http://localhost:5128/OAuth/Bot";
-    public string ResponseType = "code";
-    public string? Version = "5.131";
-    public string Scope = "friends";
-    public string ClientSecret;
-    public string ClientId;
-    public string ServiceOAuth = "https://oauth.vk.com";
-    public string UriAuthorization = "authorize";
-    public string UriGetAccessToken = "access_token";
-    public string Display = "page";
+    public string ServiceOAuth { get; set; } = string.Empty;
+    public string UriAuthorization { get; set; } = string.Empty;
+    public string UriGetAccessToken { get; set; } = string.Empty;
+
+    private readonly List<QueryOAuth>
+        QueryOAuths = new List<QueryOAuth>(); // по идей можно сделать internal, если будет в виде либы
+
+    public bool Contains(string queryName)
+    {
+        return QueryOAuths.FirstOrDefault(x => x.QueryName == queryName) != null; //todo make more Performance 
+    }
+    
+    public void AddQuery(string queryName, string value, QueryUse queryUse)
+    {
+        QueryOAuths.Add(new QueryOAuth(queryName, value, queryUse));
+    }
+
+    public IEnumerable<string> GetOAuthRequestQueries()
+        => QueryOAuths
+            .Where(x => x.Type is QueryUse.OnlyCreateRequest or QueryUse.All)
+            .Select(x => x.QueryName.AddQueryValue(x.Value));
+
+
+    public IEnumerable<string> GetAccessTokenQueries()
+        => QueryOAuths
+            .Where(x => x.Type is QueryUse.OnlyGetAccessToken or QueryUse.All)
+            .Select(x => x.QueryName.AddQueryValue(x.Value));
 }

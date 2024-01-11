@@ -1,48 +1,29 @@
-using UlearnTodoTimer.Infrasturcture.Services.AppAuth;
+using UlearnTodoTimer.OAuthConstructor.Extentions;
 using UlearnTodoTimer.OAuthConstructor.Interfaces;
 
 namespace UlearnTodoTimer.OAuthConstructor.Requests;
 
-public class OAuthRequests : IOauthRequests
+internal class OAuthRequests : IOauthRequests
 {
-    private readonly OAuthData OAuthData;
-    public string Scope => OAuthData.Scope;
+    private readonly OAuthData _oAuthData;
 
     public OAuthRequests(OAuthData oAuthData)
     {
-        OAuthData = oAuthData;
+        _oAuthData = oAuthData;
     }
-
-    public string CreateAuthRequest(string state = "")
+    
+    //Todo: можно немного порефакторить
+    public string CreateAuthRequest(string state)
     {
-        var req = $"{OAuthData.ServiceOAuth}/{OAuthData.UriAuthorization}?" +
-                  $"client_id={OAuthData.ClientId}&" +
-                  TryGetQueryState(state) +
-                  TryGetQueryDisplay() +
-                  $"scope={OAuthData.Scope}&" +
-                  $"redirect_uri={OAuthData.RedirectUrl}&" +
-                  $"response_type={OAuthData.ResponseType}&" +
-                  TryGetQueryV();
-        
-        return req;
+        return $"{_oAuthData.ServiceOAuth}/{_oAuthData.UriAuthorization}?"
+               + "state".AddQueryValue(state) + "&"
+               + string.Join("&", _oAuthData.GetOAuthRequestQueries()).TrimEnd('&');
     }
 
     public string CreateGetAccessTokenRequest(string code)
     {
-        return $"{OAuthData.ServiceOAuth}/{OAuthData.UriGetAccessToken}?" +
-               $"client_id={OAuthData.ClientId}&" +
-               $"client_secret={OAuthData.ClientSecret}&" +
-               $"redirect_uri={OAuthData.RedirectUrl}&" +
-               $"code={code}";
+        return $"{_oAuthData.ServiceOAuth}/{_oAuthData.UriGetAccessToken}?" 
+               + "code".AddQueryValue(code) + "&" 
+               + string.Join("&", _oAuthData.GetAccessTokenQueries()).TrimEnd('&');
     }
-
-
-    private string TryGetQueryDisplay()
-        => OAuthData.Display != string.Empty ? $"display={OAuthData.Display}&" : string.Empty;
-
-    private static string TryGetQueryState(string state)
-        => state != string.Empty ? $"state={state}&" : string.Empty;
-
-    private string TryGetQueryV()
-        => OAuthData.Version != string.Empty ? $"v={OAuthData.Version}" : string.Empty;
 }
