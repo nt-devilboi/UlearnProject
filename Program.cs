@@ -46,8 +46,9 @@ oAuth.AddOAuth("Google", _ =>
     .SetHostServiceOAuth("https://accounts.google.com/o/oauth2/v2/auth")
     .SetClientId("")
     .SetClientSecret("")
-    .SetScope("email")
-    .SetResponseType("code");
+    .SetScope("https://www.googleapis.com/auth/userinfo.email")
+    .SetResponseType("code")
+    .SetUriGetAccessToken("https://oauth2.googleapis.com/token");
 });
 
 var log = new ConsoleLog(new ConsoleLogSettings()

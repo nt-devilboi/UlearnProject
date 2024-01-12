@@ -33,7 +33,7 @@ public class OAuths : IRegisterOAuth, IProvideOAuth
     {
         if (!OauthRequestsMap.TryGetValue(name, out var value))
         {
-            throw new ArgumentException();
+            throw new ArgumentException("Argument exception: " + name);
         }
 
         return value;
