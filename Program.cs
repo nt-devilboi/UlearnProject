@@ -30,7 +30,7 @@ oAuth.AddOAuth("vk", _ =>
         .SetClientSecret(AuthWebSiteSettings.FromEnv().ClientSecret);
 }); // todo: можно сделать метот расширение который часть запросов пишет сам: например "AddVkOAuthWebSite"
 
-oAuth.AddOAuth("GitHub",_ =>
+oAuth.AddOAuth("GitHub", _ =>
 {
     _.SetRedirectUrl("http://localhost:5128/OAuth/Bot")
         .SetHostServiceOAuth("https://github.com")
@@ -38,6 +38,16 @@ oAuth.AddOAuth("GitHub",_ =>
         .SetClientSecret("cce83e71b1bcba85fa5493c74fca25e93ec1fb3b")
         .SetClientId("08f51cb49cd389a89b6f")
         .SetUriGetAccessToken("login/oauth/access_token");
+});
+
+oAuth.AddOAuth("Google", _ =>
+{
+    _.SetRedirectUrl("http://localhost:5128/OAuth/Bot")
+    .SetHostServiceOAuth("https://accounts.google.com/o/oauth2/v2/auth")
+    .SetClientId("")
+    .SetClientSecret("")
+    .SetScope("email")
+    .SetResponseType("code");
 });
 
 var log = new ConsoleLog(new ConsoleLogSettings()
