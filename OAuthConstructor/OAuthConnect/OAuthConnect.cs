@@ -9,18 +9,16 @@ namespace UlearnTodoTimer.OAuthConstructor;
 public class OAuthService : IOAuthService
 {
     private readonly IProvideOAuth _provideOAuth;
-    private readonly IHttpClientFactory _clientFactory;
-    public OAuthService(IProvideOAuth provideOAuth, IHttpClientFactory clientFactory)
+    public OAuthService(IProvideOAuth provideOAuth)
     {
         _provideOAuth = provideOAuth;
-        _clientFactory = clientFactory;
     }
 
     public async Task<string?> GetAccessToken(string state, string code) 
     {
         var request = _provideOAuth.GetOAuth(state).CreateGetAccessTokenRequest(code);
 
-        var client = _clientFactory.CreateClient();
+        var client = new HttpClient();
         client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
         
         var oAuthResponse =  await client.PostAsync(request, null);
