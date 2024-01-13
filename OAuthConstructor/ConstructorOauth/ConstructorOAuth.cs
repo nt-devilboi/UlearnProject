@@ -76,7 +76,7 @@ public class ConstructorOAuth
     {
         if (_oAuthData.ServiceOAuth == string.Empty)
         {
-            throw new ArgumentException("not set Service Authorization");
+            throw new ArgumentException("Not set Service Authorization");
         }
 
         if (_oAuthData.UriAuthorization == string.Empty)
