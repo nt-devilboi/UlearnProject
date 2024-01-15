@@ -7,12 +7,17 @@ namespace UlearnTodoTimer.Domen.Entities;
 public class Note
 {
     [Column("id")] public Guid Id { get; set; }
-    [Column("user_id")] public string UserId { get; set; }
-    [Column("text")] public string Text { get; set; }
-    [Column("task_id")] public string TaskId { get; set; }
+    [Column("text")] public string? Text { get; set; }
+    [Column("task_id")] public Guid TaskId { get; set; }
 
-    // public static object From(TodoRequest todoRequest, object user)
-    // {
-    //     return 
-    // }
+     public static Note From(NoteRequest noteRequest)
+     {
+         return new()
+         {
+             //!!!
+             Id = Guid.NewGuid(),
+             Text = noteRequest.ToString(),
+             TaskId = noteRequest.TodoId
+         };
+     }
 }

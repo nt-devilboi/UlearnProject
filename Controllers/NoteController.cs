@@ -28,15 +28,15 @@ public class NoteController:Controller
         return todo;
     }
 
-    // [HttpPost]
-    // public ActionResult<Todo> Post([FromBody] TodoRequest todoRequest)
-    // {
-    //     var todo = Note.From(todoRequest, _accountScope.User);
-    //
-    //     _repo.Insert(todo);
-    //
-    //     return todo;
-    // }
+     [HttpPost]
+     public ActionResult<Note> Post([FromBody] NoteRequest noteRequest)
+     {
+         var note = Note.From(noteRequest);
+    
+         _repo.Insert(note);
+    
+         return note;
+     }
 
     [HttpDelete($"{{id:guid}}")]
     public async Task<ActionResult<Note>>Delete(Guid id)
@@ -45,11 +45,4 @@ public class NoteController:Controller
         return new OkResult();
 
     }
-    //
-    // [HttpGet]
-    // public async Task<ActionResult<List<Todo>>> GetAll()
-    // {
-    //     var todos = await _repo.Get(_accountScope.User);
-    //     return todos;
-    // }
 }
