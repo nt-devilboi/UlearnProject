@@ -21,3 +21,9 @@ public class Note
          };
      }
 }
+
+public class NoteRequest
+{
+    public string Text { get; set; }
+    public Guid TodoId { get; set; }
+}
