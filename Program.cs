@@ -40,6 +40,19 @@ oAuth.AddOAuth("GitHub", _ =>
         .SetUriGetAccessToken("login/oauth/access_token");
 });
 
+oAuth.AddOAuth("Google", _ =>
+{
+    _.SetRedirectUrl("http://localhost:5128/OAuth/Bot")
+    .SetHostServiceOAuth("https://accounts.google.com")
+    .SetUriAuth("o/oauth2/v2/auth")
+    .SetClientId("358052954135-v19bn7o0codh1s7dlpvhel0j9nsdrh97.apps.googleusercontent.com")
+    .SetClientSecret("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")
+    .SetScope("https://www.googleapis.com/auth/userinfo.profile")
+    .SetResponseType("code")
+    .SetUriGetAccessToken("token")
+    .SetUriAuth("o/oauth2/v2/auth/oauthchooseaccount");
+});
+
 var log = new ConsoleLog(new ConsoleLogSettings()
 {
     ColorsEnabled = true,
