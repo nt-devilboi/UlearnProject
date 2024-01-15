@@ -16,13 +16,11 @@ namespace UlearnTodoTimer.Controllers
     {
         private readonly ISubTodoRepo _repo;
         private readonly ILog _log;
-        private readonly UserInfoScope _userInfoScope;
 
-        public SubTodoController(ISubTodoRepo repo, ILog log, UserInfoScope userInfoScope, IMediator mediator)
+        public SubTodoController(ISubTodoRepo repo, ILog log, IMediator mediator)
         {
             _repo = repo;
             _log = log;
-            _userInfoScope = userInfoScope;
         }
 
         [HttpGet($"{{id:guid}}")]
@@ -37,7 +35,7 @@ namespace UlearnTodoTimer.Controllers
         [HttpPost]
         public async Task<ActionResult<SubTodo>> Post([FromBody] SubTodoRequest subTodoRequest)
         {
-            var subTodo = SubTodo.From(subTodoRequest, _userInfoScope.Token.id);
+            var subTodo = SubTodo.From(subTodoRequest);
             await _repo.Insert(subTodo);
 
             return subTodo;
@@ -46,7 +44,7 @@ namespace UlearnTodoTimer.Controllers
         [HttpGet]
         public async Task<ActionResult<List<SubTodo>>> GetAll()
         {
-            var subTodos = await _repo.GetAll(_userInfoScope.Token.id);
+            var subTodos = await _repo.GetAll();
 
             return subTodos;
         }
@@ -70,74 +68,5 @@ namespace UlearnTodoTimer.Controllers
 
             return new OkResult();
         }
-
-        /*// GET: SubToDoController/Details/5
-        public ActionResult Details(int id)
-        {
-            return View();
-        }
-
-        // GET: SubToDoController/Create
-        public ActionResult Create()
-        {
-            return View();
-        }
-
-        // POST: SubToDoController/Create
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Create(IFormCollection collection)
-        {
-            try
-            {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
-        }
-
-        // GET: SubToDoController/Edit/5
-        public ActionResult Edit(int id)
-        {
-            return View();
-        }
-
-        // POST: SubToDoController/Edit/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, IFormCollection collection)
-        {
-            try
-            {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
-        }
-
-        // GET: SubToDoController/Delete/5
-        public ActionResult Delete(int id)
-        {
-            return View();
-        }
-
-        // POST: SubToDoController/Delete/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id, IFormCollection collection)
-        {
-            try
-            {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
-        }*/
     }
 }
