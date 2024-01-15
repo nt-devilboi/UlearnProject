@@ -40,22 +40,26 @@ oAuth.AddOAuth("GitHub", _ =>
         .SetUriGetAccessToken("login/oauth/access_token");
 });
 
-oAuth.AddOAuth("Google", _ =>
-{
-    _.SetRedirectUrl("http://localhost:5128/OAuth/Bot")
-    .SetHostServiceOAuth("https://accounts.google.com")
-    .SetUriAuth("o/oauth2/v2/auth")
-    .SetClientId("")
-    .SetClientSecret("")
-    .SetScope("https://www.googleapis.com/auth/userinfo.email")
-    .SetResponseType("code")
-    .SetUriGetAccessToken("https://oauth2.googleapis.com/token");
-});
-
 var log = new ConsoleLog(new ConsoleLogSettings()
 {
     ColorsEnabled = true,
 });
+var MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
+
+
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy(name: MyAllowSpecificOrigins,
+        policy =>
+        {
+            policy.WithOrigins("http://localhost:3000");
+            policy.AllowAnyHeader();
+            policy.AllowCredentials();
+            policy.AllowAnyMethod();
+            policy.SetIsOriginAllowed(hostName => true);
+        });
+});
+
 
 builder.Services.AddMediatR(x => x.RegisterServicesFromAssembly(Assembly.GetExecutingAssembly()).AddRequestPreProcessor<AddTodoHanlerPre>());
 builder.Services.AddSingleton<ITodoRepo, TodoRepoFake>();
@@ -90,14 +94,18 @@ if (app.Environment.IsDevelopment())
 
 
 app.UseHttpsRedirection();
-
+app.UseCors(MyAllowSpecificOrigins);
 app.UseSession();
 app.UseAuthorization();
 app.UseAuthentication();
 
 
 app.UseWhen(c => c.Request.Path.StartsWithSegments("/api"),
-    c => { c.UseMiddleware<MiddleWareCheckTokenSesion>(); });
+    c =>
+    {
+        c.UseMiddleware<MiddleWareCheckTokenSesion>();
+        c.UseCors(MyAllowSpecificOrigins);
+    });
 
 app.MapControllers();
 

@@ -76,11 +76,30 @@ public class ConstructorOAuth
     {
         if (_oAuthData.ServiceOAuth == string.Empty)
         {
-            throw new ArgumentException("not set Service Authorization");
+            throw new ArgumentException("Not set Service Authorization");
+        }
+
+        if (_oAuthData.UriAuthorization == string.Empty)
+        {
+            throw new ArgumentException("Not Set uri for Authorization");
+        }
+
+        if (_oAuthData.UriGetAccessToken == string.Empty)
+        {
+            throw new ArgumentException("Not set Uri for Get token");
+        }
+
+        if (_oAuthData.Contains("client_id"))
+        {
+            throw new ArgumentException("Not Set client id");
+        }
+
+        if (_oAuthData.Contains("client_secret"))
+        {
+            throw new ArgumentException("Not set client secret");
         }
         
         var oAuth =  new OAuthRequests(_oAuthData);
-
         return oAuth;
     }
     

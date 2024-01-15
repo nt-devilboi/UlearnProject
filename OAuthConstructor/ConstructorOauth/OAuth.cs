@@ -33,7 +33,7 @@ public class OAuths : IRegisterOAuth, IProvideOAuth
     {
         if (!OauthRequestsMap.TryGetValue(name, out var value))
         {
-            throw new ArgumentException("Argument exception: " + name);
+            throw new ArgumentException($"OAuth With name \"{name}\" not exist");
         }
 
         return value;
