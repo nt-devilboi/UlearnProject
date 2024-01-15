@@ -7,7 +7,8 @@ namespace UlearnTodoTimer.FluetApi.ConstructorOauth;
 
 public class ConstructorOAuth
 {
-    private OAuthData _oAuthData = new OAuthData(); 
+    private OAuthData _oAuthData = new OAuthData();
+    
     public ConstructorOAuth SetRedirectUrl(string redirectUri)
     {
         _oAuthData.AddQuery(nameof(redirectUri).AsSnakeCase(), redirectUri, QueryUse.All);
@@ -89,12 +90,12 @@ public class ConstructorOAuth
             throw new ArgumentException("Not set Uri for Get token");
         }
 
-        if (_oAuthData.Contains("client_id"))
+        if (!_oAuthData.Contains("client_id"))
         {
             throw new ArgumentException("Not Set client id");
         }
 
-        if (_oAuthData.Contains("client_secret"))
+        if (!_oAuthData.Contains("client_secret"))
         {
             throw new ArgumentException("Not set client secret");
         }

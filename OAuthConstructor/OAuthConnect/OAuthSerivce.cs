@@ -14,10 +14,11 @@ public class OAuthService : IOAuthService
         _provideOAuth = provideOAuth;
     }
 
-    public async Task<string?> GetAccessToken(string state, string code) 
+    public async Task<string?> GetAccessToken(string state, string code)
     {
-        var request = _provideOAuth.GetOAuth(state).CreateGetAccessTokenRequest(code);
-
+        var nameOAuth = state.Split(":")[0]; //todo сделать реализацию более конкретную.
+        var request = _provideOAuth.GetOAuth(nameOAuth).CreateGetAccessTokenRequest(code);
+        
         var client = new HttpClient();
         client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
         
