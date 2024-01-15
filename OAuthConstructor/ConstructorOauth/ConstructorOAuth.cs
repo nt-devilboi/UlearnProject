@@ -7,7 +7,8 @@ namespace UlearnTodoTimer.FluetApi.ConstructorOauth;
 
 public class ConstructorOAuth
 {
-    private OAuthData _oAuthData = new OAuthData(); 
+    private OAuthData _oAuthData = new OAuthData();
+    
     public ConstructorOAuth SetRedirectUrl(string redirectUri)
     {
         _oAuthData.AddQuery(nameof(redirectUri).AsSnakeCase(), redirectUri, QueryUse.All);
