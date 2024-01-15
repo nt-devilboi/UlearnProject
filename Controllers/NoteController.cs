@@ -5,7 +5,8 @@ using UlearnTodoTimer.Repositories;
 using Vostok.Logging.Abstractions;
 
 namespace UlearnTodoTimer.Controllers;
-
+[ApiController]
+[Route("api/note")]
 public class NoteController:Controller
 {
     private readonly INoteRepo _repo;
@@ -22,10 +23,10 @@ public class NoteController:Controller
     [HttpGet($"{{id:guid}}")]
     public async Task<ActionResult<Note>> Get(Guid id)
     {
-        var todo = await _repo.Get(id);
-        if (todo == null) return new StatusCodeResult(404);
+        var note = await _repo.Get(id);
+        if (note == null) return new StatusCodeResult(404);
 
-        return todo;
+        return note;
     }
 
      [HttpPost]
