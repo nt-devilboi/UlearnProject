@@ -43,7 +43,8 @@ oAuth.AddOAuth("GitHub", _ =>
 oAuth.AddOAuth("Google", _ =>
 {
     _.SetRedirectUrl("http://localhost:5128/OAuth/Bot")
-    .SetHostServiceOAuth("https://accounts.google.com/o/oauth2/v2/auth")
+    .SetHostServiceOAuth("https://accounts.google.com")
+    .SetUriAuth("o/oauth2/v2/auth")
     .SetClientId("")
     .SetClientSecret("")
     .SetScope("https://www.googleapis.com/auth/userinfo.email")
