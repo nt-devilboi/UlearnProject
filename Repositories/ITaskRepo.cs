@@ -2,11 +2,11 @@ using UlearnTodoTimer.Domen.Entities;
 
 namespace UlearnTodoTimer.Repositories;
 
-public interface ITodoRepo
+public interface ITaskRepo
 {
-    public Task<Todo?> Get(Guid id);
+    public Task<Todo> Get(Guid id);
     public Task Insert(Todo todo);
-    public Task<Todo[]> GetAll(Guid tokenId);
-    void Update(Todo? todo);
+    public Task<List<Todo>> Get(User user);
+    void Update(Todo todo);
     Task Delete(Guid id);
 }
