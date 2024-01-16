@@ -36,7 +36,7 @@ oAuth.AddOAuth("google", _ =>
         .SetScope("")
         .SetHostServiceOAuth("https://www.googleapis.com")
         .SetUriAuth("auth");
-});*/
+});
 // Add services to the container.
 
 var log = new ConsoleLog(new ConsoleLogSettings()

@@ -1,11 +1,6 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Vostok.Logging.Abstractions;
-using UlearnTodoTimer.Controllers.Model;
-using UlearnTodoTimer.Domen.Entities;
 using MediatR;
-using UlearnTodoTimer.Infrasturcture.Repositories.SubTodoRepo;
-using UlearnTodoTimer.Controllers.Model;
 
 
 namespace UlearnTodoTimer.Controllers
