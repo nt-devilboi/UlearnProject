@@ -29,12 +29,10 @@ public class TodoRepoFake : ITodoRepo
     
     public void Update(Todo? todo)
     {
-        var x = _todos.FirstOrDefault(x => x.Id == todo.Id);
-        if (x != null)
-        {
-            _todos.Remove(x);
-            _todos.Add(todo);
-        }
+        var x = _todos.FirstOrDefault(x => todo != null && x.Id == todo.Id);
+        if (x == null) return;
+        _todos.Remove(x);
+        if (todo != null) _todos.Add(todo);
     }
 
     public async Task Delete(Guid id)
