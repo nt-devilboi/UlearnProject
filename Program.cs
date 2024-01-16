@@ -33,9 +33,9 @@ oAuth.AddOAuth("vk", _ =>
 oAuth.AddOAuth("google", _ =>
 {
     _.SetRedirectUrl("http://localhost:5128/OAuth/Bot")
-    .SetScope("")
-    .SetHostServiceOAuth("https://www.googleapis.com")
-    .SetUriAuth("auth")
+        .SetScope("")
+        .SetHostServiceOAuth("https://www.googleapis.com")
+        .SetUriAuth("auth");
 });
 // Add services to the container.
 
