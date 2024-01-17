@@ -83,7 +83,7 @@ app.UseAuthentication();
 
 
 app.UseWhen(c => c.Request.Path.StartsWithSegments("/api"),
-    c => { c.UseMiddleware<MiddleWareCheckTokenSesion>(); });
+    c => { c.UseMiddleware<MiddleWareCheckTokenCookie>(); });
 
 app.MapControllers();
 

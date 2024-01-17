@@ -46,7 +46,7 @@ public class AuthController : Controller
 
         var token = Token.From(accessTokenResponse.AccessTokenResponse, oAuthName);
         await _tokenAccountLinkRepository.Add(token);
-        HttpContext.Session.SetString($"token", token.Value);
+        HttpContext.Response.Cookies.Append("Token", token.ToString());
         
         return Ok();
     }

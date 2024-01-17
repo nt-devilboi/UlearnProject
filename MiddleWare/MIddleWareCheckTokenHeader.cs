@@ -32,7 +32,7 @@ public class MiddleWareCheckTokenSesion
         var token = context.Session.GetString("token");
         if (token == null)
         {
-            context.Response.StatusCode = 404;
+            context.Response.StatusCode = 403;
             await context.Response.WriteAsJsonAsync(AccessTokenNotPresentError);
             return;
         }
