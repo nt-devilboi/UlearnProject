@@ -1,7 +1,16 @@
 {
   "ExpandedNodes": [
-    ""
+    "",
+    "\\Controllers",
+    "\\Controllers\\TodoController",
+    "\\Controllers\\TodoController\\Model",
+    "\\Domen",
+    "\\Domen\\Entities",
+    "\\Infrasturcture",
+    "\\Infrasturcture\\Repositories",
+    "\\Infrasturcture\\Repositories\\SubTodoRepo",
+    "\\OAuthConstructor"
   ],
-  "SelectedNode": "\\D:\\Homework\\Diary",
+  "SelectedNode": "\\Domen\\Entities\\SubTodo.cs",
   "PreviewInSolutionExplorer": false
 }

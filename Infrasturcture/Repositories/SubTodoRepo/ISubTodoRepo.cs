@@ -6,7 +6,7 @@ public interface ISubTodoRepo
 {
     public Task<SubTodo> Get(Guid id);
     public Task Insert(SubTodo subTodo);
-    public Task<List<SubTodo>> GetAll(Guid user);
+    public Task<List<SubTodo>> GetAll(Guid todo);
     void Update(SubTodo? subTodo);
     Task Delete(Guid id);
 }

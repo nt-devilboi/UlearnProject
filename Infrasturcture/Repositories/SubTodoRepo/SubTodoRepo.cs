@@ -15,9 +15,9 @@ namespace UlearnTodoTimer.Infrasturcture.Repositories.SubTodoRepo
             return Task.FromResult(_list.FirstOrDefault(t => t.Id == id));
         }
 
-        public Task<List<SubTodo>> GetAll(Guid user)
+        public Task<List<SubTodo>> GetAll(Guid todo)
         {
-            return Task.FromResult(_list);
+            return Task.FromResult(_list.Where(s => s.TodoId == todo).ToList());
         }
 
         public Task Insert(SubTodo subTodo)

@@ -32,19 +32,19 @@ namespace UlearnTodoTimer.Controllers
             return subTodo;
         }
 
-        [HttpPost]
-        public async Task<ActionResult<SubTodo>> Post([FromBody] SubTodoRequest subTodoRequest)
+        [HttpPost($"{{todoId:guid}}")]
+        public async Task<ActionResult<SubTodo>> Post([FromBody] SubTodoRequest subTodoRequest, Guid todoId)
         {
-            var subTodo = SubTodo.From(subTodoRequest);
+            var subTodo = SubTodo.From(subTodoRequest, todoId);
             await _repo.Insert(subTodo);
 
             return subTodo;
         }
 
-        [HttpGet]
-        public async Task<ActionResult<List<SubTodo>>> GetAll()
+        [HttpGet($"{{todoId:guid}}")]
+        public async Task<ActionResult<List<SubTodo>>> GetAll(Guid todoId)
         {
-            var subTodos = await _repo.GetAll();
+            var subTodos = await _repo.GetAll(todoId);
 
             return subTodos;
         }

@@ -35,7 +35,7 @@ oAuth.AddOAuth("google", _ =>
     _.SetRedirectUrl("http://localhost:5128/OAuth/Bot")
     .SetScope("")
     .SetHostServiceOAuth("https://www.googleapis.com")
-    .SetUriAuth("auth")
+    .SetUriAuth("auth");
 });
 // Add services to the container.
 
