@@ -1,5 +1,4 @@
-using UlearnTodoTimer.OAuthConstructor;
-using UlearnTodoTimer.OAuthConstructor.Extentions;
+using UlearnTodoTimer.Infrasturcture.Services.AppAuth;
 using UlearnTodoTimer.OAuthConstructor.Interfaces;
 using UlearnTodoTimer.OAuthConstructor.Requests;
 
@@ -7,100 +6,82 @@ namespace UlearnTodoTimer.FluetApi.ConstructorOauth;
 
 public class ConstructorOAuth
 {
+    private static readonly string ClientSecretEnv = "CLIENT_SECRET_BOT";
     private OAuthData _oAuthData = new OAuthData();
-    
-    public ConstructorOAuth SetRedirectUrl(string redirectUri)
+
+    public ConstructorOAuth SetRedirectUrl(string redirectUrl)
     {
-        _oAuthData.AddQuery(nameof(redirectUri).AsSnakeCase(), redirectUri, QueryUse.All);
+        _oAuthData.RedirectUrl = redirectUrl;
+
         return this;
     }
     public ConstructorOAuth SetClientSecret(string clientSecret)
     {
-        _oAuthData.AddQuery(nameof(clientSecret).AsSnakeCase(), clientSecret, QueryUse.OnlyGetAccessToken);
+        _oAuthData.ClientSecret = clientSecret;
+
         return this;
     }
 
     public ConstructorOAuth SetDisplay(string display)
     {
-        _oAuthData.AddQuery(nameof(display).AsSnakeCase(), display, QueryUse.OnlyCreateRequest);
+        _oAuthData.Display = display;
+
         return this;
     }
     public ConstructorOAuth SetClientId(string clientId)
     {
-        _oAuthData.AddQuery(nameof(clientId).AsSnakeCase(), clientId, QueryUse.All);
+        _oAuthData.ClientId = clientId;
+
         return this;
     }
     
-    public ConstructorOAuth SetVersion(string version)
+    public ConstructorOAuth SetVersion(string v)
     {
-        _oAuthData.AddQuery(nameof(version).AsSnakeCase(), version, QueryUse.OnlyCreateRequest); // по идей можно вынести часть кода, вот этого
+        _oAuthData.Version = v;
+
         return this;
     }
 
-    public ConstructorOAuth SetCustomQuery(string nameQuery, string value, QueryUse queryUse)
-    {
-        _oAuthData.AddQuery(nameQuery, value, queryUse);
-        return this;
-    }
     public ConstructorOAuth SetHostServiceOAuth(string hostServiceOAuth)
     {
         _oAuthData.ServiceOAuth = hostServiceOAuth;
+
         return this;
     }
 
     public ConstructorOAuth SetUriAuth(string uriAuth)
     {
         _oAuthData.UriAuthorization = uriAuth;
+
         return this;
     }
     
     public ConstructorOAuth SetUriGetAccessToken(string uriGetToken)
     {
         _oAuthData.UriGetAccessToken = uriGetToken;
+
         return this;
     }
     
     public ConstructorOAuth SetScope(string scope)
     {
-        _oAuthData.AddQuery(nameof(scope), scope, QueryUse.OnlyCreateRequest);
+        _oAuthData.Scope = scope;
+
         return this;
     }
     
-    public ConstructorOAuth SetResponseType(string responseType)
+    public ConstructorOAuth SetResponseType(string type)
     {
-        _oAuthData.AddQuery(nameof(responseType).AsSnakeCase(), responseType, QueryUse.OnlyCreateRequest);
+        _oAuthData.ResponseType = type;
+
         return this;
     }
     
     
     public IOauthRequests Build()
     {
-        if (_oAuthData.ServiceOAuth == string.Empty)
-        {
-            throw new ArgumentException("Not set Service Authorization");
-        }
-
-        if (_oAuthData.UriAuthorization == string.Empty)
-        {
-            throw new ArgumentException("Not Set uri for Authorization");
-        }
-
-        if (_oAuthData.UriGetAccessToken == string.Empty)
-        {
-            throw new ArgumentException("Not set Uri for Get token");
-        }
-
-        if (!_oAuthData.Contains("client_id"))
-        {
-            throw new ArgumentException("Not Set client id");
-        }
-
-        if (!_oAuthData.Contains("client_secret"))
-        {
-            throw new ArgumentException("Not set client secret");
-        }
-        
         var oAuth =  new OAuthRequests(_oAuthData);
+
         return oAuth;
     }
     

@@ -1,10 +1,10 @@
-
+using UlearnTodoTimer.Infrasturcture.Services.AppAuth;
 using UlearnTodoTimer.OAuthConstructor.Interfaces;
 
 namespace UlearnTodoTimer.FluetApi.ConstructorOauth;
 
 
-// привет принцип ISP (разделение интерфейсов)
+// привет принцип ISP (разделение интерфейсов
 public class OAuths : IRegisterOAuth, IProvideOAuth
 {
     private readonly Dictionary<string, IOauthRequests> OauthRequestsMap = new Dictionary<string, IOauthRequests>();
@@ -12,6 +12,7 @@ public class OAuths : IRegisterOAuth, IProvideOAuth
     
     public OAuths AddOAuth(string name, Action<ConstructorOAuth> ConfigureOAuth)
     {
+        
         if (name == string.Empty)
         {
             throw new ArgumentException("name is empty");
@@ -33,7 +34,7 @@ public class OAuths : IRegisterOAuth, IProvideOAuth
     {
         if (!OauthRequestsMap.TryGetValue(name, out var value))
         {
-            throw new ArgumentException($"OAuth With name \"{name}\" not exist");
+            throw new ArgumentException();
         }
 
         return value;

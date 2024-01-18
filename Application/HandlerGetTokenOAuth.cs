@@ -16,7 +16,6 @@ public class HandlerGetTokenOAuth : IRequestHandler<GetTokenRequest, GetTokenRes
         var accessToken = await oAuthResponse.Content.JsonDeserialize<AccessTokenResponse>();
         if (accessToken == null) return new GetTokenResponse(null);
         
-        
         return new GetTokenResponse(accessToken);
     }
 }

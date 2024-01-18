@@ -1,8 +1,6 @@
-using UlearnTodoTimer.OAuthConstructor.Extentions;
+namespace UlearnTodoTimer.Infrasturcture.Services.AppAuth;
 
-namespace UlearnTodoTimer.OAuthConstructor;
-
-internal class OAuthData // по идей можно сделать internal, если будет в виде либы
+public class OAuthData
 {
     public string RedirectUrl;
     public string ResponseType;

@@ -3,7 +3,7 @@ using Newtonsoft.Json;
 
 namespace TgBot.controller.model;
 
-public record AccessTokenResponse : IAccessToken
+public record AccessTokenResponse
 {
     [JsonProperty("access_token")]
     public string AccessToken { get; set; }
