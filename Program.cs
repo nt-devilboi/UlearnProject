@@ -30,13 +30,13 @@ oAuth.AddOAuth("vk", _ =>
         .SetClientSecret(AuthWebSiteSettings.FromEnv().ClientSecret);
 }); // todo: можно сделать метот расширение который часть запросов пишет сам: например "AddVkOAuthWebSite"
 
-oAuth.AddOAuth("google", _ =>
+/*oAuth.AddOAuth("google", _ =>
 {
     _.SetRedirectUrl("http://localhost:5128/OAuth/Bot")
     .SetScope("")
     .SetHostServiceOAuth("https://www.googleapis.com")
-    .SetUriAuth("auth");
-});
+    .SetUriAuth("auth")
+});*/
 // Add services to the container.
 
 var log = new ConsoleLog(new ConsoleLogSettings()
@@ -83,7 +83,7 @@ app.UseAuthentication();
 
 
 app.UseWhen(c => c.Request.Path.StartsWithSegments("/api"),
-    c => { c.UseMiddleware<MiddleWareCheckTokenSesion>(); });
+    c => { c.UseMiddleware<MiddleWareCheckTokenCookie>(); });
 
 app.MapControllers();
 

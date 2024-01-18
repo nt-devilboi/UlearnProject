@@ -47,8 +47,8 @@ public class ToDoController
     }
 
     [HttpGet]
-    public async Task<ActionResult<List<Todo>>> GetAll()
-    {
+    public async Task<ActionResult<Todo[]>> GetAll()
+    {   
         var todos = await _todoRepo.GetAll(_userInfoScope.Token.id);
 
         return todos;
