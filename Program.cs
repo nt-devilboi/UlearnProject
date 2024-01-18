@@ -1,10 +1,10 @@
 using System.Reflection;
-using MediatR;
-using MediatR.Pipeline;
 using UlearnTodoTimer.Application;
 using UlearnTodoTimer.Controllers.Model;
 using UlearnTodoTimer.FluetApi.ConstructorOauth;
 using UlearnTodoTimer.MiddleWare;
+using UlearnTodoTimer.OAuthConstructor;
+using UlearnTodoTimer.OAuthConstructor.Extentions;
 using UlearnTodoTimer.OAuthConstructor.Interfaces;
 using UlearnTodoTimer.Repositories;
 using UlearnTodoTimer.Services;
@@ -30,18 +30,46 @@ oAuth.AddOAuth("vk", _ =>
         .SetClientSecret(AuthWebSiteSettings.FromEnv().ClientSecret);
 }); // todo: можно сделать метот расширение который часть запросов пишет сам: например "AddVkOAuthWebSite"
 
-/*oAuth.AddOAuth("google", _ =>
+oAuth.AddOAuth("GitHub", _ =>
 {
     _.SetRedirectUrl("http://localhost:5128/OAuth/Bot")
-    .SetScope("")
-    .SetHostServiceOAuth("https://www.googleapis.com")
-    .SetUriAuth("auth")
-});*/
-// Add services to the container.
+        .SetHostServiceOAuth("https://github.com")
+        .SetUriAuth("login/oauth/authorize")
+        .SetClientSecret("cce83e71b1bcba85fa5493c74fca25e93ec1fb3b")
+        .SetClientId("08f51cb49cd389a89b6f")
+        .SetUriGetAccessToken("login/oauth/access_token");
+});
+
+oAuth.AddOAuth("Google", _ =>
+{
+    _.SetRedirectUrl("http://localhost:5128/OAuth/Bot")
+    .SetHostServiceOAuth("https://accounts.google.com")
+    .SetUriAuth("o/oauth2/v2/auth")
+    .SetClientId("")
+    .SetClientSecret("")
+    .SetScope("https://www.googleapis.com/auth/userinfo.profile")
+    .SetResponseType("code")
+    .SetUriGetAccessToken("token")
+    .SetUriAuth("o/oauth2/v2/auth/oauthchooseaccount");
+});
 
 var log = new ConsoleLog(new ConsoleLogSettings()
 {
     ColorsEnabled = true,
+});
+var MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
+
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy(name: MyAllowSpecificOrigins,
+        policy =>
+        {
+            policy.WithOrigins("http://localhost:3000");
+            policy.AllowAnyHeader();
+            policy.AllowCredentials();
+            policy.AllowAnyMethod();
+            policy.SetIsOriginAllowed(hostName => true);
+        });
 });
 
 builder.Services.AddMediatR(x => x.RegisterServicesFromAssembly(Assembly.GetExecutingAssembly()).AddRequestPreProcessor<AddTodoHanlerPre>());
@@ -52,6 +80,8 @@ builder.Logging.AddVostok(log);
 builder.Services.AddSingleton<ILog>(log);
 builder.Services.AddControllers();
 
+builder.Services.AddSingleton<IOAuthService, OAuthService>();
+builder.Services.AddOAuths(oAuth);
 
 builder.Services.AddDistributedMemoryCache();
 builder.Services.AddSession();

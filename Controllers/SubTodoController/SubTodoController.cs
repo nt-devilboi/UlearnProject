@@ -4,12 +4,12 @@ using Vostok.Logging.Abstractions;
 using UlearnTodoTimer.Controllers.Model;
 using UlearnTodoTimer.Domen.Entities;
 using MediatR;
-using UlearnTodoTimer.Controllers.Model;
+using UlearnTodoTimer.Infrasturcture.Repositories.SubTodoRepo;
 
 
 namespace UlearnTodoTimer.Controllers
 {
-    /*[ApiController]
+    [ApiController]
     [Route("api/[controller]")]
     public class SubTodoController : Controller
     {
@@ -67,5 +67,5 @@ namespace UlearnTodoTimer.Controllers
 
             return new OkResult();
         }
-    }*/
+    }
 }
