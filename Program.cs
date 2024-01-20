@@ -12,6 +12,7 @@ using Vostok.Logging.Microsoft;
 using UlearnTodoTimer.FluetApi.ConstructorOauth;
 using UlearnTodoTimer.OAuthConstructor;
 using Microsoft.AspNetCore.CookiePolicy;
+using EduControl.MiddleWare;
 
 var builder = WebApplication.CreateBuilder(args);
 var oAuth = OAuths.CreateBuilder();
@@ -47,7 +48,7 @@ oAuth.AddOAuth("Google", _ =>
         .SetRedirectUrl("http://localhost:5128/OAuth/Bot")
         .SetClientId("358052954135-v19bn7o0codh1s7dlpvhel0j9nsdrh97.apps.googleusercontent.com")
         .SetClientSecret("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")
-        .SetScope("https://www.googleapis.com/auth/userinfo.profile")
+        .SetScope("https://www.googleapis.com/auth/userinfo.profile");
 });
 
 var log = new ConsoleLog(new ConsoleLogSettings()
@@ -118,7 +119,7 @@ app.UseAuthentication();
 app.UseWhen(c => c.Request.Path.StartsWithSegments("/api"),
     c =>
     {
-        c.UseMiddleware<MiddleWareCheckTokenSesion>();
+        c.UseMiddleware<MIddleWareCheckTokenHeader>();
         c.UseCors(MyAllowSpecificOrigins);
     });
 
