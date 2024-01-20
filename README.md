@@ -4,7 +4,7 @@
 \
 Слои:\
 \
-[Контроллеры](https://github.com/nt-devilboi/UlearnProject/tree/dev/Controllers) 
+[Контроллеры](https://github.com/nt-devilboi/UlearnProject/tree/master/Controllers) 
 
 [Репозитории](https://github.com/nt-devilboi/UlearnProject/tree/master/Infrasturcture/Repositories) 
 
