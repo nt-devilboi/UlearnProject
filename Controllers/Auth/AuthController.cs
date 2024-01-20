@@ -44,9 +44,9 @@ public class AuthController : Controller
 
         var tokenEntity = Token.From(token, state);
         await _tokenAccountLinkRepository.Add(tokenEntity);
-        HttpContext.Session.SetString($"token", tokenEntity.Value);
+        HttpContext.Response.Cookies.Append("token", tokenEntity.Value);
 
-        return Ok();
+        return Redirect("https://localhost:5173");
     }
 
     [HttpGet("get/oauth/requests")]

@@ -1,15 +1,17 @@
 using System.Reflection;
 using EasyOAuth2._0.OAuthConstructor.Extentions;
+
 using UlearnTodoTimer.Application;
 using UlearnTodoTimer.Controllers.Model;
-using UlearnTodoTimer.FluetApi.ConstructorOauth;
 using UlearnTodoTimer.MiddleWare;
-using UlearnTodoTimer.OAuthConstructor;
 using UlearnTodoTimer.Repositories;
 using UlearnTodoTimer.Services;
 using Vostok.Logging.Abstractions;
 using Vostok.Logging.Console;
 using Vostok.Logging.Microsoft;
+using UlearnTodoTimer.FluetApi.ConstructorOauth;
+using UlearnTodoTimer.OAuthConstructor;
+using Microsoft.AspNetCore.CookiePolicy;
 
 var builder = WebApplication.CreateBuilder(args);
 var oAuth = OAuths.CreateBuilder();
@@ -34,17 +36,19 @@ oAuth.AddOAuth("GitHub", _ =>
         .SetClientId("08f51cb49cd389a89b6f");
 });
 
-/*oAuth.AddOAuth("Google", _ =>
+oAuth.AddOAuth("Google", _ =>
 {
-    _.SetRedirectUrl("http://localhost:5128/OAuth/Bot")
+    _
         .SetHostServiceOAuth("https://accounts.google.com")
         .SetUriPageAuth("o/oauth2/v2/auth")
+        .SetResponseType("code")
+        .SetUriGetAccessToken("token")
+    .ConfigureApp()
+        .SetRedirectUrl("http://localhost:5128/OAuth/Bot")
         .SetClientId("358052954135-v19bn7o0codh1s7dlpvhel0j9nsdrh97.apps.googleusercontent.com")
         .SetClientSecret("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")
         .SetScope("https://www.googleapis.com/auth/userinfo.profile")
-        .SetResponseType("code")
-        .SetUriGetAccessToken("token");
-});*/
+});
 
 var log = new ConsoleLog(new ConsoleLogSettings()
 {
@@ -82,6 +86,7 @@ builder.Services.AddSession();
 
 builder.WebHost.UseUrls("http://localhost:5128"); // оо великий костыль
 
+
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
@@ -97,6 +102,11 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
+app.UseCookiePolicy(new CookiePolicyOptions()
+{
+    HttpOnly = HttpOnlyPolicy.None,
+    MinimumSameSitePolicy = SameSiteMode.Lax
+});
 
 app.UseHttpsRedirection();
 app.UseCors(MyAllowSpecificOrigins);
