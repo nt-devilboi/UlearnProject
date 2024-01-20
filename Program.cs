@@ -46,8 +46,8 @@ oAuth.AddOAuth("Google", _ =>
         .SetUriGetAccessToken("token")
     .ConfigureApp()
         .SetRedirectUrl("http://localhost:5128/OAuth/Bot")
-        .SetClientId("358052954135-v19bn7o0codh1s7dlpvhel0j9nsdrh97.apps.googleusercontent.com")
-        .SetClientSecret("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")
+        .SetClientId("")
+        .SetClientSecret("")
         .SetScope("https://www.googleapis.com/auth/userinfo.profile");
 });
 
